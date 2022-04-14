@@ -29,7 +29,7 @@ Route::group([
     // 'middleware' => ['isAdmin']
 ],function(){
 
-    Route::resource('users', 'UserController');
+    // Route::resource('users', 'UserController');
     Route::resource('categories', 'CategoryController');
     Route::get('users/{id}/set-role/{roleID}', 'UserController@setRole');
     Route::get('users/{id}/remove-role/{roleID}', 'UserController@removeRole');
