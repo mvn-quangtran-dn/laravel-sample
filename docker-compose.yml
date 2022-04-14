@@ -1,0 +1,47 @@
+version: '2.0'
+networks:
+  backend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.19.0.0/24
+volumes:
+  data-vol:
+    # Volume to host db service data locally.
+    driver: local
+services:
+  web-app:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+        - "8888:80"
+    volumes:
+        - ./:/var/www
+    container_name: web-cont
+    networks:
+      # - default
+      - backend
+    links:
+        - db
+  db:
+    image: mysql:5.7.35
+    platform: linux/x86_64
+    restart: always
+    ports:
+      - "33080:3306" # host:container
+    volumes:
+      - data-vol:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=intern-2022
+      - MYSQL_USER=default
+      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=root
+      - TZ=Asia/Tokyo
+    networks:
+      # - default
+      backend:
+        aliases:
+          - local-mysql.local
+    container_name: db-cont
