@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use App\Models\Country;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CountryController extends Controller
+class HomeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,14 +14,7 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $countries = Country::with([
-            'users' => function ($query) {
-                return $query->whereHas('profile', function($q){
-                    return $q->where('age', '>',50);
-                });
-            }
-        ])->get();
-        return view('countries.index', compact('countries'));
+        return view('auth.home');
     }
 
     /**
@@ -48,10 +41,10 @@ class CountryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Country  $country
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Country $country)
+    public function show($id)
     {
         //
     }
@@ -59,10 +52,10 @@ class CountryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Country  $country
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Country $country)
+    public function edit($id)
     {
         //
     }
@@ -71,10 +64,10 @@ class CountryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Country  $country
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Country $country)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -82,10 +75,10 @@ class CountryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Country  $country
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $country)
+    public function destroy($id)
     {
         //
     }

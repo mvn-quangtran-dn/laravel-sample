@@ -40,10 +40,34 @@ Route::group([
 });
 
 //Show list  user
-Route::get('users', 'UserController@index')->name('users.index');
+Route::get('users', 'UserController@index')->name('users.index')->middleware('is.admin');
 //Show form create user
 Route::get('users/create', 'UserController@create')->name('users.create');
 //Store new user
 Route::post('users', 'UserController@store')->name('users.store');
 //Show user detail
 Route::get('users/{id}', 'UserController@show')->name('users.show');
+//Show user edit page
+Route::get('users/{id}/edit', 'UserController@edit')->name('users.edit');
+// Update user info
+Route::put('users/{id}', 'UserController@update')->name('users.update');
+// Delete user
+Route::delete('users/{id}', 'UserController@destroy')->name('users.delete');
+
+//List country pages
+Route::get('countries', 'CountryController@index')->name('countries.index');
+
+//show Form register an account
+Route::get('/register', 'Auth\RegisterController@create')->name('accounts.show-register-form');
+//Store an account
+Route::post('register', 'Auth\RegisterController@store')->name('accounts.store');
+
+//show Login page
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('accounts.login-form');
+//Login
+Route::post('/login', 'Auth\LoginController@login')->name('accounts.login');
+
+//show home page
+Route::get('/home', 'Auth\HomeController@index')
+->name('accounts.home')->middleware('auth');
+

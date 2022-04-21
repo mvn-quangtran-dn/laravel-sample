@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\User;
 
 class ProfileFactory extends Factory
 {
@@ -14,12 +13,11 @@ class ProfileFactory extends Factory
      */
     public function definition()
     {
-        $userIds = User::pluck('id');
-        // dd($userIds);
         return [
             'address' => $this->faker->address,
             'tel' => $this->faker->phoneNumber,
-            'user_id' => $this->faker->unique()->randomElement($userIds)
+            'age' => rand(1,100),
+            'gender' => rand(0,1)
         ];
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class EditUserTable extends Migration
+class AddAvatarInUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,7 @@ class EditUserTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('name', 50)->change();
-            // $table->renameColumn('name', 'username');
-
+            $table->string('avatar',255)->nullable()->after('password');
         });
     }
 
@@ -28,8 +26,7 @@ class EditUserTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('name', 255)->change();
-            // $table->renameColumn('username', 'name');
+            $table->dropColumn('avatar');
         });
     }
 }

@@ -1,12 +1,42 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use App\Models\Country;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CountryController extends Controller
+class LoginController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('guest')->only('showLoginForm');
+    }
+    /**
+     * Display a login page
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    /**
+     * Display a login page
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+        if (\Auth::attempt($credentials)) {
+            return redirect()->route('accounts.home');
+        }
+        return redirect()->back()->with(['error' => 'Login Failed. Try again !!']);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -14,14 +44,7 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $countries = Country::with([
-            'users' => function ($query) {
-                return $query->whereHas('profile', function($q){
-                    return $q->where('age', '>',50);
-                });
-            }
-        ])->get();
-        return view('countries.index', compact('countries'));
+        //
     }
 
     /**
@@ -48,10 +71,10 @@ class CountryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Country  $country
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Country $country)
+    public function show($id)
     {
         //
     }
@@ -59,10 +82,10 @@ class CountryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Country  $country
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Country $country)
+    public function edit($id)
     {
         //
     }
@@ -71,10 +94,10 @@ class CountryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Country  $country
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Country $country)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -82,10 +105,10 @@ class CountryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Country  $country
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $country)
+    public function destroy($id)
     {
         //
     }

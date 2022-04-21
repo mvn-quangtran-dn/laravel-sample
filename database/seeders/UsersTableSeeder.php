@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
 
         //C2 Dung factory
         User::factory()
-        ->count(50)
+        ->count(10)
         ->hasProfile(1)
         ->create();
 

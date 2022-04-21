@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,8 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
-        'favorite',
+        'age',
+        'address',
         'country_id',
         'avatar'
     ];
@@ -44,23 +44,12 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        // 'role' => 'boolean'
-        'favorite' => 'array'
     ];
 
     public function scopeIsOver($query, $age)
     {
         return $query->where('age', '>', $age);
     }
-    // public function getRoleNameAttribute()
-    // {
-    //     return $this->role == 2 ? 'admin' : 'member';
-    // }
-
-    // public function setRoleAttribute($value)
-    // {
-    //      $this->attributes['role'] = $value == 'admin' ? 3 : 4;
-    // }
 
     public function profile()
     {
@@ -81,4 +70,19 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Country::class, 'country_id');
     }
+
+    public function getByName($name)
+    {
+       return self::where('name', $name)->get();
+    }
+    public function findByNameAndEmail($name, $email)
+    {
+       return self::where('name', $name)->where('email', $email)->get();
+    }
+
+    public function findByCountry($country_id)
+    {
+       return self::where('country_id', $country_id)->get();
+    }
+
 }

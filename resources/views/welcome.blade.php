@@ -22,6 +22,5 @@
     </head>
     <body class="antialiased">
         <h1>Hello, world!</h1>
-        <a href="{{ route('admin.users.show', 1) }}">Show user 1</a>
     </body>
 </html>

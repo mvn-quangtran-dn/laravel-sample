@@ -28,7 +28,7 @@ class CreateUserRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|max:10',
             'country_id' => 'required|exists:countries,id',
-            'avatar' => 'required|mime:jpeg,png,gif'
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg'
         ];
     }
 }

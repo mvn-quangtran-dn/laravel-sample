@@ -4,14 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Country;
 use App\Models\Profile;
 use App\Models\RoleUser;
 use DB;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Resources\UserResponse;
+use Exception;
 
 class UserController extends Controller
 {
+
+    /**
+     * Get the user resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getUser()
+    {
+        $user1 = User::getByName('Sandrine Hayes');
+        $user2 = User::findByNameAndEmail('Ariel Pfeffer', 'jaiden64@example.com');
+        $user3 = User::findByCountry(1);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -30,7 +45,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('posts', 'country')->get();
+        $users = User::with('country', 'profile')->get();
         return view('users.index', compact('users'));
     }
 
@@ -41,7 +56,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $countries = Country::get();
+        return view('users.create', compact('countries'));
     }
 
     /**
@@ -52,18 +68,32 @@ class UserController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-        $data = $request->all();
-        if ($request->hasFile('avatar'))
+        $data = $request->validated();
+        if ($request->hasFile('avatar')) //check file exist
         {
             //upload file
-            $newName = \Carbon\Carbon::now()->toString().$request->file('avatar')->getClientOriginalName();
-            $path = '/image/users/avatar/';
+            $newName = \Carbon\Carbon::now()->timestamp.$request->file('avatar')->getClientOriginalName(); // change image's name to unique name
+            $path = '/image/users/avatar/'; // path to upload image
             $request->file('avatar')->move(public_path($path), $newName);
             $data['avatar'] = $path . $newName;
         }
-        $user = User::create($data);
-
-        return redirect()->route('users.show', $user->id);
+        DB::beginTransaction();
+        try {
+            $user = User::create($data);
+            $profileData = [
+                'address' => '12 Le Loi',
+                'tel' => '02491318241',
+                'age' => rand(1,100),
+                'gender' => rand(0,1),
+                'user_id' => $user->id
+            ];
+            Profile::create($profileData);
+            DB::commit();
+            return redirect()->route('users.index');
+        } catch (Exception $ex) {
+            DB::rollback();
+            return redirect()->back()->with(['error'=> 'Create user error !!'] );
+        }
     }
 
     /**
@@ -87,7 +117,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $countries = Country::get();
+        $user = User::find($id);
+        return view('users.edit', compact('user','countries'));
     }
 
     /**
@@ -99,7 +131,11 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+        $data = $request->all();
+        $data['password'] = bcrypt($data['password']);
+        $user->update($data);
+        return redirect()->route('users.index');
     }
 
     /**
@@ -110,6 +146,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        $user->profile()->delete();
+        $user->delete();
+        return redirect()->route('users.index');
     }
 }
