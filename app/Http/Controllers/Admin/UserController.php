@@ -54,7 +54,7 @@ class UserController extends Controller
         }
         $user = User::create($data);
 
-        return redirect()->route('admin.users.show', $user->id);
+        return redirect()->route('users.show', $user->id);
     }
 
     /**
