@@ -102,4 +102,3 @@ Route::get('/products', 'ProductController@index')->name('products.index');
 //thêm route 2
 //them route 3
 //them route 4
-//them route 5
