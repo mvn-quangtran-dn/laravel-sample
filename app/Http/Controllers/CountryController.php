@@ -14,6 +14,7 @@ class CountryController extends Controller
      */
     public function index()
     {
+        dd(\Route::getCurrentRoute()->getActionName());
         $countries = Country::with([
             'users' => function ($query) {
                 return $query->whereHas('profile', function($q){

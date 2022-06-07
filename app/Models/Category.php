@@ -14,6 +14,7 @@ class Category extends Model
         'name'
     ];
 
+    const PAGINATE=5;
     public function products()
     {
         return $this->hasMany('App\Models\Product', 'categoryid', 'cateid');

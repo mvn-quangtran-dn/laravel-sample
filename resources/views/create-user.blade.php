@@ -1,7 +1,9 @@
 @extends('layouts.master')
 @section('title', 'Create User Page')
 @section('content')
+@can('create-user')
 <h1>Create users</h1>
+
 <form action="{{ route('users.store') }}" method="post" style="width: 600px">
     @csrf
     <div class="form-group">

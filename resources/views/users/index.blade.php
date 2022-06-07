@@ -8,7 +8,7 @@
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Avatar</th>
+        {{-- <th scope="col">Avatar</th> --}}
         <th scope="col">Name</th>
         <th scope="col">Email</th>
         <th scope="col">Address</th>
@@ -23,7 +23,7 @@
     @foreach ($users as $user)
       <tr>
         <th scope="row">{{ $user->id }}</th>
-        <td><img src="{{ asset($user->avatar) }}" width="50px"/></td>
+        {{-- <td><img src="{{ asset($user->avatar) }}" width="50px"/></td> --}}
         <td>{{ $user->name }}</td>
         <td>{{ $user->email }}</td>
         <td>{{ $user->profile ? $user->profile->address : '' }}</td>

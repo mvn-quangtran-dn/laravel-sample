@@ -1,42 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 
-class LoginController extends Controller
+class PermissionController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('guest')->only('showLoginForm');
-    }
-    /**
-     * Display a login page
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showLoginForm()
-    {
-        return view('auth.login1');
-    }
-
-    /**
-     * Display a login page
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-        if (\Auth::attempt($credentials)) {
-            return redirect()->route('accounts.home');
-        }
-        return redirect()->back()->with(['error' => 'Login Failed. Try again !!']);
-    }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -71,10 +41,10 @@ class LoginController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Permission $permission)
     {
         //
     }
@@ -82,10 +52,10 @@ class LoginController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Permission $permission)
     {
         //
     }
@@ -94,10 +64,10 @@ class LoginController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Permission $permission)
     {
         //
     }
@@ -105,10 +75,10 @@ class LoginController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Permission $permission)
     {
         //
     }

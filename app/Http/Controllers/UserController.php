@@ -11,9 +11,14 @@ use DB;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Resources\UserResponse;
 use Exception;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+    //    $this->middleware('is.admin')->except('index', 'create');
+    }
 
     /**
      * Get the user resource.
@@ -56,6 +61,14 @@ class UserController extends Controller
      */
     public function create()
     {
+        // if (request()->user()->cannot('createUser', User::class)){
+        //     abort(403);
+        // }
+        // dd('d');
+        // if (!Gate::allows('create-user', User::class)) {
+        //     return abort(403);
+        // }
+        // $this->authorize('create', User::class);
         $countries = Country::get();
         return view('users.create', compact('countries'));
     }
@@ -102,10 +115,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show( $id, Request $request)
+    public function show(User $user, Request $request)
     {
 
-        $user = User::with(['roles'])->find($id);
+        // $user = User::with(['roles'])->find($id);
         return view('users.show', compact('user'));
     }
 
@@ -115,10 +128,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
         $countries = Country::get();
-        $user = User::find($id);
+        // $user = User::find($id);
         return view('users.edit', compact('user','countries'));
     }
 

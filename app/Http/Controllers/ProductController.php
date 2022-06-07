@@ -1,42 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class LoginController extends Controller
+class ProductController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('guest')->only('showLoginForm');
-    }
-    /**
-     * Display a login page
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showLoginForm()
-    {
-        return view('auth.login1');
-    }
-
-    /**
-     * Display a login page
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-        if (\Auth::attempt($credentials)) {
-            return redirect()->route('accounts.home');
-        }
-        return redirect()->back()->with(['error' => 'Login Failed. Try again !!']);
-    }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -44,7 +13,9 @@ class LoginController extends Controller
      */
     public function index()
     {
-        //
+
+        $products = \DB::select('select * from products');
+        return view('products.index', compact('products'));
     }
 
     /**
@@ -54,7 +25,7 @@ class LoginController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -65,7 +36,9 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        \DB::insert('insert into products (name, quantity, price) values (?,?,?)',
+        [ $request->name, $request->quantity, $request->price]);
+        return redirect()->to('/products');
     }
 
     /**
