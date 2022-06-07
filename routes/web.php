@@ -100,3 +100,4 @@ Route::post('/products', 'ProductController@store')->name('products.store');
 Route::get('/products', 'ProductController@index')->name('products.index');
 //route
 //add abc
+//tttt
