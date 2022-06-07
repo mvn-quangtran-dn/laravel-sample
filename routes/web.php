@@ -98,6 +98,9 @@ Route::post('/products', 'ProductController@store')->name('products.store');
 
 //show list product
 Route::get('/products', 'ProductController@index')->name('products.index');
+//route
+//add abc
+//tttt
 //thêm route
 //thêm route 2
 //them route 3
